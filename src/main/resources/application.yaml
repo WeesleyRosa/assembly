@@ -1,0 +1,13 @@
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: assembly
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost/assembly
+      auto-index-creation: true
+integration:
+  cpf: https://user-info.herokuapp.com
+
+
