@@ -15,4 +15,6 @@ public class AgendaException extends RuntimeException {
         this.httpStatus = httpStatus;
         this.errorCode = errorCode;
     }
+
+    public AgendaException(){}
 }

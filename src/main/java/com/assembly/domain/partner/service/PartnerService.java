@@ -1,11 +1,13 @@
 package com.assembly.domain.partner.service;
 
-import com.assembly.domain.partner.api.v1.controller.request.PartnerVoteRequest;
-import com.assembly.domain.partner.client.response.CpfValidationResponse;
+import com.assembly.domain.partner.business.PartnerBO;
+import com.assembly.domain.partner.business.PartnerVoteBO;
+import com.assembly.domain.partner.entities.Partner;
 
 public interface PartnerService {
 
-    void doVote(PartnerVoteRequest request);
+    void doVote(PartnerVoteBO partnerVoteBO);
 
-    CpfValidationResponse validateCpf(PartnerVoteRequest request);
+    Partner createPartner(PartnerBO partnerBO);
+
 }

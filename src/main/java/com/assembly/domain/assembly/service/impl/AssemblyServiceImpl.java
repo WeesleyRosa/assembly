@@ -36,8 +36,7 @@ public class AssemblyServiceImpl implements AssemblyService {
         return AssemblyConverter.convertAssemblyVotedResponse(getAssemblyById(assemblyIdentifier).orElseThrow());
     }
 
-    @Override
-    public Optional<Assembly> getAssemblyById(Long assemblyIdentifier) {
+    private Optional<Assembly> getAssemblyById(Long assemblyIdentifier) {
         return assemblyRepository.findByAssemblyIdentifierAndStatusIs(assemblyIdentifier, AssemblyStatus.VOTE_CLOSED);
     }
 
@@ -86,7 +85,6 @@ public class AssemblyServiceImpl implements AssemblyService {
     }
 
     private Assembly saveStartedAssembly(AssemblyBO assemblyBO) {
-        assemblyRepository.findByAssemblyIdentifier(assemblyBO.getAssemblyIdentifier()).orElseThrow();
         return assemblyRepository.save(AssemblyConverter.convertStartedAssembly(assemblyBO));
     }
 

@@ -5,7 +5,7 @@ spring:
     name: assembly
   data:
     mongodb:
-      uri: mongodb://root:root@localhost/assembly
+      uri: mongodb://root:root@localhost/admin
       auto-index-creation: true
 integration:
   cpf: https://user-info.herokuapp.com

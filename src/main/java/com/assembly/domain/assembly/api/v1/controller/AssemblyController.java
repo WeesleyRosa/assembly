@@ -1,6 +1,6 @@
 package com.assembly.domain.assembly.api.v1.controller;
 
-import com.assembly.domain.assembly.api.v1.controller.request.AssemblyRequest;
+import com.assembly.domain.assembly.api.v1.controller.request.CreateAssemblyRequest;
 import com.assembly.domain.assembly.api.v1.controller.response.AssemblyResponse;
 import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponseDto;
 import com.assembly.domain.assembly.business.AssemblyBO;
@@ -33,7 +33,7 @@ public class AssemblyController {
     private final AssemblyService assemblyService;
 
     @PostMapping("/create/assembly")
-    public ResponseEntity<Void> createAssembly(@Valid @RequestBody AssemblyRequest request) {
+    public ResponseEntity<Void> createAssembly(@Valid @RequestBody CreateAssemblyRequest request) {
         log.info("AssemblyController - POST - createAssembly - Start creating assembly: {}", JsonUtil.asJsonString(request));
         AssemblyBO assemblyBO = AssemblyConverter.convertAssemblyBO(request);
         Assembly assembly = assemblyService.createAssembly(assemblyBO);

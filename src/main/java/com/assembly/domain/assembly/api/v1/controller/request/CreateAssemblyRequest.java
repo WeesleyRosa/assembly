@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AssemblyRequest {
+public class CreateAssemblyRequest {
 
     @NotBlank
     private String subject;

@@ -1,6 +1,6 @@
 package com.assembly.domain.assembly.converter;
 
-import com.assembly.domain.assembly.api.v1.controller.request.AssemblyRequest;
+import com.assembly.domain.assembly.api.v1.controller.request.CreateAssemblyRequest;
 import com.assembly.domain.assembly.api.v1.controller.response.AssemblyResponse;
 import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponseDto;
 import com.assembly.domain.assembly.business.AssemblyBO;
@@ -66,13 +66,13 @@ public final class AssemblyConverter {
 
     }
 
-    public static AssemblyBO convertAssemblyBO(AssemblyRequest assemblyRequest) {
+    public static AssemblyBO convertAssemblyBO(CreateAssemblyRequest createAssemblyRequest) {
         return AssemblyBO
                 .builder()
-                .assemblyStatus(assemblyRequest.getAssemblyStatus())
-                .assemblyIdentifier(assemblyRequest.getAssemblyIdentifier())
-                .subject(assemblyRequest.getSubject())
-                .votingTime(assemblyRequest.getVotingTime())
+                .assemblyStatus(createAssemblyRequest.getAssemblyStatus())
+                .assemblyIdentifier(createAssemblyRequest.getAssemblyIdentifier())
+                .subject(createAssemblyRequest.getSubject())
+                .votingTime(createAssemblyRequest.getVotingTime())
                 .build();
 
     }
