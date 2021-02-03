@@ -21,7 +21,7 @@ public class AssemblyVoteResponseDto {
     private AssemblyStatus status;
     private String subject;
     /**
-     * Map of associates who voted this agenda.. Key = documentNumber and value = value of the vote
+     * Map of associates who voted this assembly.. Key = documentNumber and value = value of the vote
      */
     private Map<String, Boolean> votes = new HashMap<>();;
 }

@@ -21,13 +21,4 @@ public class PartnerVoteRequest {
     private Long assemblyIdentifier;
     @NotNull
     private Boolean vote;
-
-    @NotBlank
-    @Pattern(regexp = "^([a-zA-Z0-9_\\-.]+)@([a-zA-Z0-9_\\-.]+)\\.([a-zA-Z]{2,5})$")
-    private String email;
-
-    @NotBlank
-    @Pattern(regexp = "^[0-9]{1,20}$")
-    private String phoneNumber;
-
 }

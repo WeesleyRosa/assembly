@@ -15,8 +15,6 @@ public final class PartnerConverter {
                 .builder()
                 .assemblyIdentifier(partnerVoteRequest.getAssemblyIdentifier())
                 .documentNumber(partnerVoteRequest.getDocumentNumber())
-                .email(partnerVoteRequest.getEmail())
-                .phoneNumber(partnerVoteRequest.getPhoneNumber())
                 .vote(partnerVoteRequest.getVote())
                 .build();
 

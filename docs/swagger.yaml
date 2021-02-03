@@ -1,0 +1,335 @@
+openapi: 3.0.3
+info:
+  title: Assembly
+  description: Assembly API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local environment
+
+paths:
+  ### PARTNER CONTROLLER
+
+  '/v1/partner/vote':
+    post:
+      summary: Vote for assembly
+      tags:
+        - Account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartnerVoteRequest'
+      responses:
+        '204':
+          description: Successfully voted
+        '400':
+          description: Any error handled by the api
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal server error
+  '/v1/partner/create':
+    post:
+      summary: Create new partner
+      tags:
+        - Account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePartnerRequest'
+      responses:
+        '201':
+          description: Successfully created assembly
+          headers:
+            Location:
+              schema:
+                type: string
+                example: http://localhost/v1/partner/create/10
+        '400':
+          description: Any error handled by the api
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal server error
+
+  ### ASSEMBLY CONTROLLER
+
+  '/v1/assembly/create/assembly':
+    post:
+      summary: Create new assembly
+      tags:
+        - Assembly
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssemblyRequest'
+      responses:
+        '201':
+          description: Successfully created assembly
+          headers:
+            Location:
+              schema:
+                type: string
+                example: http://localhost/v1/assembly/create/assembly/10
+        '400':
+          description: Any error handled by the api
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal server error
+
+  '/v1/assembly/start/{assemblyIdentifier}':
+    post:
+      summary: Start assembly to vote
+      tags:
+        - Assembly
+      parameters:
+        - in: path
+          required: true
+          name: assemblyIdentifier
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Successfully started assembly
+        '400':
+          description: Any error handled by the api
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+
+  '/v1/assembly/result/{assemblyIdentifier}':
+    get:
+      summary: Retrieve assembly result
+      tags:
+        - Assembly
+      parameters:
+        - in: path
+          required: true
+          name: assemblyIdentifier
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Successfully retrieved account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssemblyResponse'
+        '400':
+          description: Any error handled by the api
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+  
+  '/v1/assembly':
+    get:
+      summary: List all assemblies
+      tags:
+        - Assembly
+      responses:
+        '204':
+          description: Assemblies successfully returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssemblyListResponse'
+          
+        '400':
+          description: Any error handled by the api
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    ErrorCodeEnum:
+      type: string
+      enum:
+        - CLIENT_REQUEST_ERROR
+        - INVALID_REQUEST_BODY
+    AssemblyStatus:
+      type: string
+      enum:
+        - CREATED
+        - VOTE_CLOSED
+        - VOTING
+    PartnerVoteRequest:
+      type: object
+      properties:
+        documentNumber:
+          type: string
+          example: 123456789
+        assemblyIdentifier:
+          type: integer
+          format: int64
+          example: 88
+        vote:
+          type: boolean
+          example: true
+      required:
+        - documentNumber
+        - assemblyIdentifier
+        - vote
+    CreatePartnerRequest:
+      type: object
+      properties:
+        documentNumber:
+          type: string
+          example: 123456789
+        assemblyIdentifier:
+          type: integer
+          format: int64
+          example: 88
+        fullName:
+          type: string
+          example: Wesley Silva da Rosa
+        email:
+          type: string
+          format: int64
+          example: 88
+        phoneNumber:
+          type: string
+          example: wesley@email.com
+        birthday:
+          type: string
+          format: date
+          example: '2020-07-29'
+      required:
+        - documentNumber
+        - assemblyIdentifier
+        - fullName
+        - email
+        - phoneNumber
+        - birthday
+    AssemblyListResponse:
+      type: object
+      properties:
+        assemblyIdentifier:
+          type: string
+          example: 123456789
+        subject:
+          type: string
+          example: subject test
+        voteStartedAt:
+          type: string
+          format: date
+          example: '2020-07-29'
+        voteEndedAt:
+          type: string
+          format: date
+          example: '2020-07-29'
+        status:
+          $ref: '#/components/schemas/AssemblyStatus'
+        votingTime:
+          type: string
+          example: 60000L
+        votes:
+          $ref: '#/components/schemas/Votes'
+      required:
+        - subject
+        - voteStartedAt
+        - voteEndedAt
+        - status
+        - votingTime
+        - votes
+        - assemblyIdentifier
+    AssemblyResponse:
+      type: object
+      properties:
+        voteStartedAt:
+          type: string
+          format: datetime
+          example: '2020-07-29:00:11:22'
+        voteEndedAt:
+         type: string
+         format: datetime
+         example: '2020-07-29:11:22:11'
+        status:
+          $ref: '#/components/schemas/AssemblyStatus'
+        subject:
+          type: string
+          example: Texto
+        votes:
+          $ref: '#/components/schemas/Votes'
+      required:
+        - voteStartedAt
+        - voteEndedAt
+        - status
+        - subject
+        - votes
+    Votes:
+      type: object
+      properties:
+        documentNumber:
+          type: boolean
+    CreateAssemblyRequest:
+      type: object
+      properties:
+        subject:
+          type: string
+          example: 123456789
+        assemblyIdentifier:
+          type: integer
+          format: int64
+          example: 88
+        votingTime:
+          type: string
+          example: Wesley Silva da Rosa
+        AssemblyStatus:
+          $ref: '#/components/schemas/AssemblyStatus'
+      required:
+        - subject
+        - assemblyIdentifier
+        - votingTime
+        - AssemblyStatus
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCodeEnum'
+        message:
+          type: string
+          example: Integration error
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldResponse'
+    FieldResponse:
+      type: object
+      properties:
+        field:
+          type: string
+          example: field
+        cause:
+          type: string
+          example: cause
