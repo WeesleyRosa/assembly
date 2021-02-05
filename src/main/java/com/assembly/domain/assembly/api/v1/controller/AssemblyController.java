@@ -2,7 +2,7 @@ package com.assembly.domain.assembly.api.v1.controller;
 
 import com.assembly.domain.assembly.api.v1.controller.request.CreateAssemblyRequest;
 import com.assembly.domain.assembly.api.v1.controller.response.AssemblyResponse;
-import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponseDto;
+import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponse;
 import com.assembly.domain.assembly.business.AssemblyBO;
 import com.assembly.domain.assembly.converter.AssemblyConverter;
 import com.assembly.domain.assembly.entities.Assembly;
@@ -54,8 +54,8 @@ public class AssemblyController {
     }
 
     @GetMapping("/result/{assemblyIdentifier}")
-    public ResponseEntity<AssemblyVoteResponseDto> getAssemblyById(@PathVariable Long assemblyIdentifier) {
+    public ResponseEntity<AssemblyVoteResponse> getAssemblyById(@PathVariable Long assemblyIdentifier) {
         log.info("AssemblyController - GET - getAssemblyById - Getting assembly with id: {}", assemblyIdentifier);
-        return ResponseEntity.ok(assemblyService.getAssemblyByAssemblyIdentifierOrThrow(assemblyIdentifier));
+        return ResponseEntity.ok(assemblyService.getAssemblyByAssemblyIdentifier(assemblyIdentifier));
     }
 }

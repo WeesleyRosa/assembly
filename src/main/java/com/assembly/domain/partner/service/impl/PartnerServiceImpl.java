@@ -13,6 +13,7 @@ import com.assembly.domain.partner.entities.Partner;
 import com.assembly.domain.partner.repository.PartnerRepository;
 import com.assembly.domain.partner.service.PartnerService;
 import com.assembly.infra.common.enums.ErrorCodeEnum;
+import com.assembly.infra.common.exception.DataNotFoundException;
 import com.assembly.infra.common.exception.UserVoteException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     @Override
-    public void doVote(PartnerVoteBO partnerVoteBO) {
+    public Assembly doVote(PartnerVoteBO partnerVoteBO) {
         log.info("AssociateService - doVote - Getting objects from database.");
         if(validateCpf(partnerVoteBO).getStatus().equalsIgnoreCase("UNABLE_TO_VOTE")) {
             log.info("AssociateService - doVote - Cpf unable to vote.");
@@ -44,20 +45,22 @@ public class PartnerServiceImpl implements PartnerService {
                     "Assembly not found.");
         }
         Optional<Assembly> assembly = assemblyRepository.findByAssemblyIdentifierAndStatusIs(partnerVoteBO.getAssemblyIdentifier(), AssemblyStatus.VOTING);
-        assembly.ifPresent(assemblyObj -> {
+        if(assembly.isPresent()) {
+            Assembly assemblyObj = assembly.get();
             log.info("AssociateService - doVote - Assembly found.");
             saveAssemblyVote(assemblyObj, partnerVoteBO);
             Optional<Partner> partnerOptional = partnerRepository.findByDocumentNumber(partnerVoteBO.getDocumentNumber());
             partnerOptional.ifPresent(partner -> saveAssociateVote(partner, partnerVoteBO));
-        });
+            return assemblyObj;
+        }
+        else
+            throw new DataNotFoundException("Assembly not found for given identifier");
     }
 
     @Override
     public Partner createPartner(PartnerBO partnerBO) {
         log.info("AssociateService - saveAssemblyVote - Saving new partner in database: {} ", partnerBO);
-        Partner partner = PartnerConverter.convertToPartner(partnerBO);
-        partnerRepository.save(partner);
-        return partner;
+        return partnerRepository.save(PartnerConverter.convertToPartner(partnerBO));
     }
 
     private void saveAssemblyVote(Assembly assembly, PartnerVoteBO partnerVoteBO) {

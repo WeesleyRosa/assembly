@@ -1,12 +1,12 @@
 package com.assembly.domain.assembly.service.impl;
 
 import com.assembly.domain.assembly.api.v1.controller.request.CreateAssemblyRequest;
-import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponseDto;
+import com.assembly.domain.assembly.api.v1.controller.response.AssemblyResponse;
+import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponse;
 import com.assembly.domain.assembly.business.AssemblyBO;
 import com.assembly.domain.assembly.entities.Assembly;
 import com.assembly.domain.assembly.entities.enumerator.AssemblyStatus;
 import com.assembly.domain.assembly.repository.AssemblyRepository;
-import com.assembly.domain.assembly.service.AssemblyService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,9 +15,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +36,7 @@ class AssemblyServiceImplTest {
     private AssemblyRepository assemblyRepository;
 
     @Nested
-    @DisplayName("Assembly Controller")
+    @DisplayName("Assembly Service")
     class Create {
 
         @DisplayName("Success - Successfully created new assembly")
@@ -56,18 +62,31 @@ class AssemblyServiceImplTest {
             assertEquals(10L, assembly.getAssemblyIdentifier());
             assertEquals(600000L, assembly.getVotingTime());
         }
+
+        @DisplayName("Success - Successfully started assembly")
+        @Test
+        void start_assembly() {
+            Optional<Assembly> assemblyOptional = Optional.of(TestContextFactory.createAssembly());
+
+            when(assemblyRepository.findByAssemblyIdentifier(anyLong())).thenReturn(assemblyOptional);
+            when(assemblyRepository.save(any(Assembly.class))).thenReturn(assemblyOptional.get());
+
+            assemblyService.startAssembly(10L);
+            verify(assemblyRepository, times(1)).save(any());
+        }
+
+        @DisplayName("Success - Successfully created new assembly")
+        @Test
+        void list_assemblies() {
+            when(assemblyRepository.findAll()).thenReturn(List.of(TestContextFactory.createAssembly()));
+
+            List<AssemblyResponse> assemblyResponses = assemblyService.getAllAssemblies();
+
+            verify(assemblyRepository, times(1)).findAll();
+        }
     }
 
     static class TestContextFactory {
-
-        public static CreateAssemblyRequest createCreateCampaignRequest() {
-            return CreateAssemblyRequest.builder()
-                    .assemblyIdentifier(10L)
-                    .assemblyStatus(AssemblyStatus.CREATED)
-                    .subject("Subject test")
-                    .votingTime(600000L)
-                    .build();
-        }
 
         public static Assembly createAssembly() {
             return Assembly.builder()
@@ -85,10 +104,5 @@ class AssemblyServiceImplTest {
                     .votingTime(600000L)
                     .build();
         }
-
-        public static AssemblyVoteResponseDto createAssemblyVote() {
-            return AssemblyVoteResponseDto.builder().build();
-        }
     }
-
 }

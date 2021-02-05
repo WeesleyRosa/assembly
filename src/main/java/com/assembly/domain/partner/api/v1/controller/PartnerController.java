@@ -5,6 +5,7 @@ import com.assembly.domain.partner.api.v1.controller.request.PartnerVoteRequest;
 import com.assembly.domain.partner.business.PartnerBO;
 import com.assembly.domain.partner.business.PartnerVoteBO;
 import com.assembly.domain.partner.converter.PartnerConverter;
+import com.assembly.domain.partner.entities.Partner;
 import com.assembly.domain.partner.service.PartnerService;
 import com.assembly.infra.common.util.UriGeneratorUtil;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,8 @@ public class PartnerController {
     public ResponseEntity<Void> createPartner(@Valid @RequestBody CreatePartnerRequest request) {
         log.info("PartnerController - createPartner - Create partner: {}.", request);
         PartnerBO partnerVoteBO = PartnerConverter.convertToPartnerBO(request);
-        partnerService.createPartner(partnerVoteBO);
-        return ResponseEntity.created(UriGeneratorUtil.get("/{documentNumber}", request.getDocumentNumber())).build();
+        Partner partner = partnerService.createPartner(partnerVoteBO);
+        return ResponseEntity.created(UriGeneratorUtil.get("/{documentNumber}", partner.getDocumentNumber())).build();
 
     }
 }

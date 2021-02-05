@@ -1,7 +1,7 @@
 package com.assembly.domain.assembly.service.impl;
 
 import com.assembly.domain.assembly.api.v1.controller.response.AssemblyResponse;
-import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponseDto;
+import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponse;
 import com.assembly.domain.assembly.business.AssemblyBO;
 import com.assembly.domain.assembly.converter.AssemblyConverter;
 import com.assembly.domain.assembly.entities.Assembly;
@@ -31,7 +31,7 @@ public class AssemblyServiceImpl implements AssemblyService {
     }
 
     @Override
-    public AssemblyVoteResponseDto getAssemblyByAssemblyIdentifierOrThrow(Long assemblyIdentifier) {
+    public AssemblyVoteResponse getAssemblyByAssemblyIdentifier(Long assemblyIdentifier) {
         log.info("AssemblyService - getAssemblyByAssemblyIdentifierOrThrow - Getting assembly by id.");
         return AssemblyConverter.convertAssemblyVotedResponse(getAssemblyById(assemblyIdentifier).orElseThrow());
     }

@@ -2,7 +2,7 @@ package com.assembly.domain.assembly.converter;
 
 import com.assembly.domain.assembly.api.v1.controller.request.CreateAssemblyRequest;
 import com.assembly.domain.assembly.api.v1.controller.response.AssemblyResponse;
-import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponseDto;
+import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponse;
 import com.assembly.domain.assembly.business.AssemblyBO;
 import com.assembly.domain.assembly.entities.Assembly;
 import com.assembly.domain.assembly.entities.enumerator.AssemblyStatus;
@@ -38,8 +38,8 @@ public final class AssemblyConverter {
                 .build();
     }
 
-    public static AssemblyVoteResponseDto convertAssemblyVotedResponse(Assembly assembly) {
-        return AssemblyVoteResponseDto.builder()
+    public static AssemblyVoteResponse convertAssemblyVotedResponse(Assembly assembly) {
+        return AssemblyVoteResponse.builder()
                 .status(assembly.getStatus())
                 .subject(assembly.getSubject())
                 .voteEndedAt(assembly.getVoteEndedAt())

@@ -3,7 +3,7 @@ package com.assembly.domain.assembly.api.v1.web;
 import com.assembly.domain.assembly.api.v1.controller.AssemblyController;
 import com.assembly.domain.assembly.api.v1.controller.request.CreateAssemblyRequest;
 import com.assembly.domain.assembly.api.v1.controller.response.AssemblyResponse;
-import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponseDto;
+import com.assembly.domain.assembly.api.v1.controller.response.AssemblyVoteResponse;
 import com.assembly.domain.assembly.business.AssemblyBO;
 import com.assembly.domain.assembly.entities.Assembly;
 import com.assembly.domain.assembly.entities.enumerator.AssemblyStatus;
@@ -84,7 +84,7 @@ class AssemblyControllerTest {
         @DisplayName("Success - Successfully retrieved an existing assembly")
         @Test
         void retrieve_assembly() throws Exception {
-            when(assemblyService.getAssemblyByAssemblyIdentifierOrThrow(1L)).thenReturn(TestContextFactory.createAssemblyVote());
+            when(assemblyService.getAssemblyByAssemblyIdentifier(1L)).thenReturn(TestContextFactory.createAssemblyVote());
             mockMvc.perform(get("/v1/assembly/result/1")
                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk());
@@ -135,8 +135,8 @@ class AssemblyControllerTest {
                     .build();
         }
 
-        public static AssemblyVoteResponseDto createAssemblyVote() {
-            return AssemblyVoteResponseDto.builder().build();
+        public static AssemblyVoteResponse createAssemblyVote() {
+            return AssemblyVoteResponse.builder().build();
         }
     }
 }

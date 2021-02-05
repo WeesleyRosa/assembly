@@ -14,7 +14,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AssemblyVoteResponseDto {
+public class AssemblyVoteResponse {
 
     private LocalDateTime voteStartedAt;
     private LocalDateTime voteEndedAt;
